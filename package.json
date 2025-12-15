@@ -66,9 +66,9 @@
       "icon.png",
       "icons/**/*",
       "package.json",
+      ".next/**/*",
       "!node_modules/**/*",
       "!src/**/*",
-      "!.next/**/*",
       "!dist/**/*",
       "!*.bat",
       "!*.md"
