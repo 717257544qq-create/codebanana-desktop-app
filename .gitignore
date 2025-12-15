@@ -1,0 +1,12 @@
+
+node_modules
+.history
+.next
+*.bak*
+.DS_Store
+
+# Build output
+dist
+out
+
+.vercel

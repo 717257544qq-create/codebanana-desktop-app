@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeBanana 设置</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .settings-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 40px;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        .settings-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 4px;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            color: #6c757d;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button.active {
+            background: white;
+            color: #495057;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .setting-group {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .setting-group h3 {
+            color: #2c3e50;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .setting-item {
+            margin-bottom: 20px;
+        }
+        
+        .setting-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .setting-item label {
+            display: block;
+            color: #495057;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .setting-item input,
+        .setting-item select,
+        .setting-item textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+        
+        .setting-item input:focus,
+        .setting-item select:focus,
+        .setting-item textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            transform: scale(1.2);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-online {
+            background: #28a745;
+        }
+        
+        .status-offline {
+            background: #dc3545;
+        }
+        
+        .icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: #28a745;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast.error {
+            background: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="header">
+            <h1>🍌 CodeBanana 设置</h1>
+            <p>个性化您的 AI 编程助手体验</p>
+        </div>
+        
+        <div class="settings-tabs">
+            <button class="tab-button active" onclick="switchTab('general')">常规设置</button>
+            <button class="tab-button" onclick="switchTab('account')">账号管理</button>
+            <button class="tab-button" onclick="switchTab('translation')">翻译功能</button>
+            <button class="tab-button" onclick="switchTab('advanced')">高级选项</button>
+        </div>
+        
+        <!-- 常规设置 -->
+        <div id="general" class="tab-content active">
+            <div class="setting-group">
+                <h3>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4Z"/>
+                    </svg>
+                    服务配置
+                </h3>
+                
+                <div class="setting-item">
+                    <label for="serviceUrl">服务地址</label>
+                    <input type="url" id="serviceUrl" placeholder="https://pre.codebanana.com">
+                    <div class="help-text">修改此地址可连接到不同的 CodeBanana 服务实例</div>
+                </div>
+                
+                <div class="setting-item">
+                    <label for="theme">界面主题</label>
+                    <select id="theme">
+                        <option value="auto">跟随系统</option>
+                        <option value="light">浅色模式</option>
+                        <option value="dark">深色模式</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="autoLogin">
+                    <label for="autoLogin">启用自动登录（跳过网页登录）</label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 账号管理 -->
+        <div id="account" class="tab-content">
+            <div class="setting-group">
+                <h3>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                    </svg>
+                    登录信息
+                </h3>
+                
+                <div class="setting-item">
+                    <label for="username">用户名/邮箱</label>
+                    <input type="text" id="username" placeholder="输入您的用户名或邮箱">
+                </div>
+                
+                <div class="setting-item">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" placeholder="输入您的密码">
+                </div>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="rememberAccount">
+                    <label for="rememberAccount">记住账号信息（安全加密存储）</label>
+                </div>
+                
+                <div class="setting-item">
+                    <button class="btn btn-primary" onclick="testLogin()">测试登录</button>
+                    <button class="btn btn-danger" onclick="clearAccount()">清除账号</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 翻译功能 -->
+        <div id="translation" class="tab-content">
+            <div class="setting-group">
+                <h3>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12.87,15.07L10.33,12.56L10.36,12.53C12.1,10.59 13.34,8.36 14.07,6H17V4H10V2H8V4H1V6H12.17C11.5,7.92 10.44,9.75 9,11.35C8.07,10.32 7.3,9.19 6.69,8H4.69C5.42,9.63 6.42,11.17 7.67,12.56L2.58,17.58L4,19L9,14L12.11,17.11L12.87,15.07M18.5,10H16.5L12,22H14L15.12,19H19.87L21,22H23L18.5,10M15.88,17L17.5,12.67L19.12,17H15.88Z"/>
+                    </svg>
+                    翻译设置
+                </h3>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="translationEnabled" checked>
+                    <label for="translationEnabled">启用内置翻译功能</label>
+                </div>
+                
+                <div class="setting-item">
+                    <label for="defaultLanguage">默认翻译语言</label>
+                    <select id="defaultLanguage">
+                        <option value="zh-CN">简体中文</option>
+                        <option value="zh-TW">繁體中文</option>
+                        <option value="en">English</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="es">Español</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <label for="testText">测试翻译</label>
+                    <textarea id="testText" rows="3" placeholder="输入要翻译的文本..."></textarea>
+                    <button class="btn btn-primary" onclick="testTranslation()" style="margin-top: 10px;">测试翻译</button>
+                </div>
+                
+                <div class="setting-item">
+                    <label>翻译结果</label>
+                    <div id="translationResult" style="padding: 10px; background: white; border-radius: 6px; min-height: 40px; border: 1px solid #e9ecef;">
+                        翻译结果将显示在这里...
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 高级选项 -->
+        <div id="advanced" class="tab-content">
+            <div class="setting-group">
+                <h3>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M10,22C9.75,22 9.54,21.82 9.5,21.58L9.13,18.93C8.5,18.68 7.96,18.34 7.44,17.94L4.95,18.95C4.73,19.03 4.46,18.95 4.34,18.73L2.34,15.27C2.21,15.05 2.27,14.78 2.46,14.63L4.57,12.97L4.5,12L4.57,11L2.46,9.37C2.27,9.22 2.21,8.95 2.34,8.73L4.34,5.27C4.46,5.05 4.73,4.96 4.95,5.05L7.44,6.05C7.96,5.66 8.5,5.32 9.13,5.07L9.5,2.42C9.54,2.18 9.75,2 10,2H14C14.25,2 14.46,2.18 14.5,2.42L14.87,5.07C15.5,5.32 16.04,5.66 16.56,6.05L19.05,5.05C19.27,4.96 19.54,5.05 19.66,5.27L21.66,8.73C21.79,8.95 21.73,9.22 21.54,9.37L19.43,11L19.5,12L19.43,13L21.54,14.63C21.73,14.78 21.79,15.05 21.66,15.27L19.66,18.73C19.54,18.95 19.27,19.04 19.05,18.95L16.56,17.95C16.04,18.34 15.5,18.68 14.87,18.93L14.5,21.58C14.46,21.82 14.25,22 14,22H10M11.25,4L10.88,6.61C9.68,6.86 8.62,7.5 7.85,8.39L5.44,7.35L4.69,8.65L6.8,10.2C6.4,11.37 6.4,12.64 6.8,13.8L4.68,15.36L5.43,16.66L7.86,15.62C8.63,16.5 9.68,17.14 10.87,17.38L11.24,20H12.76L13.13,17.39C14.32,17.14 15.37,16.5 16.14,15.62L18.57,16.66L19.32,15.36L17.2,13.81C17.6,12.64 17.6,11.37 17.2,10.2L19.31,8.65L18.56,7.35L16.15,8.39C15.38,7.5 14.32,6.86 13.12,6.61L12.75,4H11.25Z"/>
+                    </svg>
+                    高级配置
+                </h3>
+                
+                <div class="setting-item">
+                    <label for="windowSize">窗口大小</label>
+                    <select id="windowSize">
+                        <option value="1200,800">1200 × 800（紧凑）</option>
+                        <option value="1600,1000" selected>1600 × 1000（推荐）</option>
+                        <option value="1920,1080">1920 × 1080（大屏）</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item checkbox-item">
+                    <input type="checkbox" id="enableDevTools">
+                    <label for="enableDevTools">启用开发者工具菜单</label>
+                </div>
+                
+                <div class="setting-item">
+                    <label>应用信息</label>
+                    <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #e9ecef;">
+                        <p><strong>版本:</strong> <span id="appVersion">1.0.3</span></p>
+                        <p><strong>状态:</strong> 
+                            <span class="status-indicator status-online"></span>
+                            <span id="appStatus">运行中</span>
+                        </p>
+                        <p><strong>数据目录:</strong> <span id="dataPath">~/.codebanana</span></p>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <button class="btn btn-secondary" onclick="exportSettings()">导出设置</button>
+                    <button class="btn btn-secondary" onclick="importSettings()">导入设置</button>
+                    <button class="btn btn-danger" onclick="resetSettings()">重置所有设置</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="saveSettings()">保存设置</button>
+            <button class="btn btn-secondary" onclick="cancelSettings()">取消</button>
+        </div>
+    </div>
+    
+    <div id="toast" class="toast"></div>
+    
+    <script src="settings.js"></script>
+</body>
+</html>

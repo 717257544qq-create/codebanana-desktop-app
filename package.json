@@ -1,0 +1,79 @@
+{
+  "name": "codebanana-desktop-app",
+  "version": "1.0.4",
+  "description": "AI-powered desktop application for developers",
+  "author": "CodeBanana Team",
+  "main": "main.js",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "electron": "electron .",
+    "build:electron": "electron-builder",
+    "build:win": "electron-builder --win --x64"
+  },
+  "dependencies": {
+    "next": "^16.0.10",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "electron": "^32.0.0",
+    "electron-builder": "^25.1.8",
+    "typescript": "5.9.3"
+  },
+  "build": {
+    "appId": "com.codebanana.desktop",
+    "productName": "CodeBanana",
+    "compression": "maximum",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "CodeBanana",
+      "installerIcon": "icon.png",
+      "uninstallerIcon": "icon.png",
+      "installerHeaderIcon": "icon.png",
+      "deleteAppDataOnUninstall": false,
+      "perMachine": false,
+      "runAfterFinish": true,
+      "artifactName": "CodeBanana-Setup-${version}.exe",
+      "license": "LICENSE.txt"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "storage.js",
+      "translator.js",
+      "settings.html",
+      "settings.js",
+      "icon.png",
+      "icons/**/*",
+      "package.json",
+      "!node_modules/**/*",
+      "!src/**/*",
+      "!.next/**/*",
+      "!dist/**/*",
+      "!*.bat",
+      "!*.md"
+    ],
+    "asarUnpack": [],
+    "extraResources": []
+  }
+}
