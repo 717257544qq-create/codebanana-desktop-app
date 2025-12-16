@@ -380,9 +380,12 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       enableRemoteModule: false,
       webSecurity: true,
-      allowRunningInsecureContent: false
+      allowRunningInsecureContent: false,
+      // 阻止第三方内容和弹窗
+      partition: 'persist:main',
+      contextIsolation: true
     },
-    title: 'CodeBanana - AI编程助手 v1.0.3',
+    title: 'CodeBanana - AI编程助手 v1.0.4',
     titleBarStyle: 'default',
     frame: true,
     transparent: false,
@@ -410,16 +413,19 @@ function createWindow() {
     }, 30);
   });
 
-  // 获取服务地址
-  const serviceUrl = settings.serviceUrl || 'https://pre.codebanana.com';
-  console.log('Loading service URL:', serviceUrl);
+  // 加载本地 Next.js 登录页面
+  const isDev = process.env.NODE_ENV === 'development';
+  const startUrl = isDev
+    ? 'http://localhost:3000'
+    : `file://${path.join(__dirname, '.next', 'server', 'app', 'index.html')}`;
   
-  // 加载服务
-  mainWindow.loadURL(serviceUrl);
+  console.log('Loading login page:', startUrl);
   
-  // 执行自动登录
-  if (settings.autoLogin) {
-    performAutoLogin();
+  // 生产环境：加载打包后的静态文件
+  if (!isDev) {
+    mainWindow.loadFile(path.join(__dirname, 'out', 'index.html'));
+  } else {
+    mainWindow.loadURL(startUrl);
   }
 
   // 优化加载体验
@@ -540,6 +546,15 @@ app.whenReady().then(() => {
   
   // 设置 IPC
   setupIPC();
+  
+  // 阻止第三方登录弹窗（Google, Facebook 等）
+  session.defaultSession.webRequest.onBeforeRequest(
+    { urls: ['*://accounts.google.com/*', '*://www.facebook.com/*', '*://github.com/login/*'] },
+    (details, callback) => {
+      console.log('Blocked third-party login:', details.url);
+      callback({ cancel: true });
+    }
+  );
   
   // 创建窗口和菜单
   createWindow();

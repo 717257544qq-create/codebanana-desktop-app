@@ -1,6 +1,6 @@
 {
   "name": "codebanana-desktop-app",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "AI-powered desktop application for developers",
   "author": "CodeBanana Team",
   "main": "main.js",
@@ -10,7 +10,7 @@
     "start": "next start",
     "electron": "electron .",
     "build:electron": "electron-builder",
-    "build:win": "electron-builder --win --x64"
+    "build:win": "next build && electron-builder --win --x64"
   },
   "dependencies": {
     "next": "^16.0.10",
@@ -54,7 +54,8 @@
       "perMachine": false,
       "runAfterFinish": true,
       "artifactName": "CodeBanana-Setup-${version}.exe",
-      "license": "LICENSE.txt"
+      "license": "LICENSE.txt",
+      "unicode": true
     },
     "files": [
       "main.js",
@@ -67,9 +68,10 @@
       "icon.ico",
       "icons/**/*",
       "package.json",
-      ".next/**/*",
+      "out/**/*",
       "!node_modules/**/*",
       "!src/**/*",
+      "!.next/**/*",
       "!dist/**/*",
       "!*.bat",
       "!*.md"
