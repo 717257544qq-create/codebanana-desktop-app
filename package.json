@@ -38,7 +38,7 @@
           ]
         }
       ],
-      "icon": "icon.png"
+      "icon": "icon.ico"
     },
     "nsis": {
       "oneClick": false,
@@ -64,6 +64,7 @@
       "settings.html",
       "settings.js",
       "icon.png",
+      "icon.ico",
       "icons/**/*",
       "package.json",
       ".next/**/*",
